@@ -29,6 +29,9 @@ jobs:
           python-version: "3.12"
 
       # No pip install: the project deliberately uses the standard library only.
+      - name: Run smoke tests
+        run: python test_report.py
+
       - name: Generate report
         run: python main.py --out public
 

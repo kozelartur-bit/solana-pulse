@@ -24,6 +24,11 @@ open out/index.html
 | Market | SOL price, market cap, 24h/7d/30d moves, distance from ATH, 30-day series | CoinGecko (keyless) |
 | DeFi | TVL with 30-day history, 24h and 7d change | DeFiLlama |
 | Economy | stablecoin float on Solana, DEX volume 24h/7d | DeFiLlama |
+| REV | in-protocol fees and revenue, 24h/7d/30d | DeFiLlama |
+| Activity | distinct fee payers per block, repeat rate, transactions per block | Solana JSON-RPC |
+| Ecosystem | top DeFi protocols, TVL by category, tokenized RWAs | DeFiLlama |
+| News | validator client releases, recently merged SIMDs | GitHub API (keyless) |
+| Roadmap | upcoming protocol upgrades | curated, `data/roadmap.json` |
 
 RPC methods used: `getSlot`, `getBlockTime`, `getEpochInfo`,
 `getRecentPerformanceSamples`, `getVoteAccounts`, `getSupply`, `getHealth`.
@@ -36,6 +41,37 @@ Every run writes three files to the output directory:
   inline SVG charts. No CDN, no bundler, no charting library.
 - **`report.md`** — human-readable brief with tables.
 - **`report.json`** — full structured data, including the raw 30-day series.
+
+Committed examples of all three live in [`samples/`](samples/).
+
+## What is interactive
+
+Without a charting library or any dependency:
+
+- **Charts respond to hover and touch.** Each chart carries its own series as
+  JSON on the wrapper element; moving across it snaps to the nearest point and
+  reads out the date and value, with a cursor line marking the position.
+- **Every table sorts.** Click a column header to sort, click again to reverse.
+  The comparator honours magnitude suffixes, so `$1.1B` sorts above `$904.4M`
+  rather than below it — stripping the suffix and comparing bare digits is the
+  obvious implementation and it is wrong.
+- **Links open the primary source.** Release tags and SIMD numbers link to the
+  GitHub release and pull request they describe.
+
+## Tests
+
+```bash
+python test_report.py
+```
+
+No pytest, no installs. The tests cover the parts that fail silently: that
+alerts fire on threshold breaches and stay quiet otherwise, that alerts are
+ordered by severity, that the HTML contains no external resource, and — most
+importantly — that both renderers survive a report in which every single source
+failed. Live endpoints are deliberately not tested; a suite that goes red
+because CoinGecko rate-limited teaches nothing.
+
+CI runs them before every publish.
 
 ## Automation
 
@@ -140,16 +176,23 @@ from an email attachment.
 
 ```
 main.py               orchestration and CLI
+test_report.py        smoke tests, stdlib only
 collect/
-  rpc.py              Solana JSON-RPC client, endpoint rotation, metrics
+  rpc.py              Solana JSON-RPC client, endpoint rotation, metrics,
+                      block sampling for activity
   offchain.py         DeFiLlama and CoinGecko
+  ecosystem.py        protocols, RWAs, priority fees, REV, roadmap
+  news.py             client releases and merged SIMDs via GitHub API
 analyze/
   anomaly.py          thresholds + z-scores
 render/
-  html.py             dark dashboard, inline SVG
+  html.py             dark dashboard, inline SVG, hover and sort behaviour
   markdown.py         readable brief
+data/
+  roadmap.json        curated upgrade list
+samples/              committed example outputs
 .github/workflows/
-  report.yml          6-hourly build and publish
+  report.yml          test, build and publish every 6 hours
 ```
 
 ## Requirements

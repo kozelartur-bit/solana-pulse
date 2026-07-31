@@ -42,8 +42,18 @@ def _delta_class(value: Any) -> str:
     return "up" if value > 0 else "down" if value < 0 else "flat"
 
 
-def _sparkline(points: list[float], width: int = 560, height: int = 120) -> str:
-    """Inline SVG line chart with a soft area fill."""
+def _sparkline(
+    points: list[float],
+    labels: list[str] | None = None,
+    prefix: str = "$",
+    width: int = 560,
+    height: int = 120,
+) -> str:
+    """Inline SVG line chart with a soft area fill and a hover readout.
+
+    The series is embedded as JSON on the wrapper so the page script can show
+    values on hover without pulling in a charting library.
+    """
     clean = [p for p in points if isinstance(p, (int, float))]
     if len(clean) < 2:
         return '<p class="muted">Not enough data for a chart.</p>'
@@ -63,12 +73,26 @@ def _sparkline(points: list[float], width: int = 560, height: int = 120) -> str:
     stroke = "#64f0b0" if rising else "#ff7a7a"
     fill = "rgba(100,240,176,.14)" if rising else "rgba(255,122,122,.14)"
 
+    series = json.dumps(
+        [
+            {"v": round(v, 4), "l": (labels[i] if labels and i < len(labels) else "")}
+            for i, v in enumerate(clean)
+        ]
+    )
+
     return (
-        f'<svg class="spark" viewBox="0 0 {width} {height}" preserveAspectRatio="none" role="img">'
+        f'<div class="chart" data-series="{html.escape(series, quote=True)}" '
+        f'data-prefix="{html.escape(prefix)}">'
+        f'<svg class="spark" viewBox="0 0 {width} {height}" preserveAspectRatio="none" role="img" '
+        f'aria-label="{len(clean)}-point trend chart">'
         f'<polygon points="{area}" fill="{fill}"/>'
         f'<polyline points="{line}" fill="none" stroke="{stroke}" stroke-width="2" '
         f'stroke-linejoin="round" stroke-linecap="round"/>'
+        f'<line class="cursor" x1="0" y1="0" x2="0" y2="{height}" stroke="#5a6270" '
+        f'stroke-width="1" stroke-dasharray="3 3" opacity="0"/>'
         f"</svg>"
+        f'<div class="tip" hidden></div>'
+        f"</div>"
     )
 
 
@@ -110,8 +134,58 @@ def render(report: dict[str, Any]) -> str:
         )
 
     # ------------------------------------------------------------------ charts
-    price_points = [p.get("price") for p in (report.get("price_history") or [])]
-    tvl_points = [p.get("tvl") for p in (tvl.get("history_30d") or [])]
+    price_hist = report.get("price_history") or []
+    price_points = [p.get("price") for p in price_hist]
+    price_labels = [
+        dt.datetime.fromtimestamp(p["ts"], dt.timezone.utc).strftime("%d %b")
+        if isinstance(p.get("ts"), (int, float))
+        else ""
+        for p in price_hist
+    ]
+
+    tvl_hist = tvl.get("history_30d") or []
+    tvl_points = [p.get("tvl") for p in tvl_hist]
+    tvl_labels = [
+        dt.datetime.fromtimestamp(p["date"], dt.timezone.utc).strftime("%d %b")
+        if isinstance(p.get("date"), (int, float))
+        else ""
+        for p in tvl_hist
+    ]
+
+    # -------------------------------------------------------------------- news
+    release_rows = "".join(
+        f'<tr><td>{html.escape(str(r.get("client", "")))}</td>'
+        f'<td class="mono"><a href="{html.escape(str(r.get("url", "")))}" target="_blank" rel="noopener">'
+        f'{html.escape(str(r.get("tag", "")))}</a></td>'
+        f'<td>{"pre-release" if r.get("prerelease") else "stable"}</td>'
+        f'<td>{r.get("age_days")}d ago</td></tr>'
+        for r in (report.get("client_releases") or [])[:6]
+    )
+    simd_rows = "".join(
+        f'<tr><td class="mono">#{r.get("number")}</td>'
+        f'<td><a href="{html.escape(str(r.get("url", "")))}" target="_blank" rel="noopener">'
+        f'{html.escape(str(r.get("title", ""))[:90])}</a></td>'
+        f'<td>{r.get("age_days")}d ago</td></tr>'
+        for r in (report.get("merged_simds") or [])
+    )
+    news_note = (
+        '<p class="note">Read from primary sources: the client release feeds and the SIMD '
+        "repository, rather than social media. A tweet announcing a release is downstream of the "
+        "release itself, and Twitter has no keyless read API anyway.</p>"
+    )
+    news_block = (
+        '<section class="card"><h2>Ecosystem news</h2>'
+        '<h3 class="sub-h">Validator client releases</h3>'
+        '<table class="sortable"><thead><tr><th>Client</th><th>Release</th>'
+        "<th>Channel</th><th>Age</th></tr></thead>"
+        f"<tbody>{release_rows}</tbody></table>"
+        '<h3 class="sub-h">Recently merged protocol proposals</h3>'
+        '<table class="sortable"><thead><tr><th>SIMD</th><th>Title</th><th>Merged</th></tr></thead>'
+        f"<tbody>{simd_rows}</tbody></table>"
+        f"{news_note}</section>"
+        if (release_rows or simd_rows)
+        else ""
+    )
 
     # -------------------------------------------------------------- validators
     rows = "".join(
@@ -122,7 +196,7 @@ def render(report: dict[str, Any]) -> str:
         for v in (val.get("top_validators") or [])
     )
     validator_table = (
-        f"<table><thead><tr><th>Vote account</th><th>Stake (SOL)</th><th>Share</th><th>Commission</th></tr></thead>"
+        f'<table class="sortable"><thead><tr><th>Vote account</th><th>Stake (SOL)</th><th>Share</th><th>Commission</th></tr></thead>'
         f"<tbody>{rows}</tbody></table>"
         if rows
         else '<p class="muted">Validator data unavailable in this run.</p>'
@@ -187,7 +261,7 @@ def render(report: dict[str, Any]) -> str:
     )
     protocols_block = (
         f'<section class="card"><h2>Top DeFi protocols by TVL</h2>'
-        f"<table><thead><tr><th>Protocol</th><th>Category</th><th>TVL</th><th>24h</th><th>7d</th></tr></thead>"
+        f'<table class="sortable"><thead><tr><th>Protocol</th><th>Category</th><th>TVL</th><th>24h</th><th>7d</th></tr></thead>'
         f"<tbody>{proto_rows}</tbody></table>{methodology_note}</section>"
         if proto_rows
         else ""
@@ -216,7 +290,7 @@ def render(report: dict[str, Any]) -> str:
     tokenized_block = (
         f'<section class="card"><h2>Tokenized real-world assets</h2>'
         f'<div class="grid" style="margin-bottom:16px">{_stat("RWA on Solana", _fmt_usd(tok.get("total_usd"), 1))}</div>'
-        f"<table><thead><tr><th>Protocol</th><th>TVL</th></tr></thead><tbody>{tok_rows}</tbody></table></section>"
+        f'<table class="sortable"><thead><tr><th>Protocol</th><th>TVL</th></tr></thead><tbody>{tok_rows}</tbody></table></section>'
         if tok_rows
         else ""
     )
@@ -287,6 +361,17 @@ td.up{{color:var(--accent)}} td.down{{color:#ff7a7a}} td.flat{{color:var(--dim)}
 .road p{{font-size:13.5px;color:var(--mid);margin-bottom:6px}}
 .road .why{{color:var(--dim);font-size:13px}}
 .road .why b{{color:var(--mid)}}
+.sub-h{{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);font-weight:500;margin:20px 0 10px}}
+.sub-h:first-of-type{{margin-top:0}}
+td a{{color:var(--fg);text-decoration:none;border-bottom:1px solid var(--line)}}
+td a:hover{{color:var(--accent);border-color:var(--accent)}}
+.chart{{position:relative}}
+table.sortable th{{cursor:pointer;user-select:none}}
+table.sortable th:hover{{color:var(--accent)}}
+table.sortable th.asc::after{{content:"  \\25B2"}}
+table.sortable th.desc::after{{content:"  \\25BC"}}
+.tip{{position:absolute;pointer-events:none;background:#191d23;border:1px solid var(--line);border-radius:7px;padding:6px 10px;font-family:var(--mono);font-size:12px;color:var(--fg);white-space:nowrap;transform:translate(-50%,-115%);z-index:5;box-shadow:0 4px 16px rgba(0,0,0,.5)}}
+.tip b{{color:var(--accent)}}
 footer{{color:var(--dim);font-size:13px;margin-top:32px;font-family:var(--mono)}}
 @media(max-width:900px){{.bar-row{{grid-template-columns:110px 1fr;gap:8px}}.bar-val{{grid-column:1/-1;text-align:left}}}}
 @media(max-width:760px){{.two{{grid-template-columns:1fr}}body{{padding:20px 14px 48px}}}}
@@ -318,7 +403,7 @@ footer{{color:var(--dim);font-size:13px;margin-top:32px;font-family:var(--mono)}
       {_stat("Price", _fmt_usd(price.get("price_usd")), "", price.get("change_24h_pct"))}
       {_stat("Market cap", _fmt_usd(price.get("market_cap_usd"), 1))}
     </div>
-    {_sparkline(price_points)}
+    {_sparkline(price_points, price_labels)}
   </section>
 
   <section class="card">
@@ -327,7 +412,7 @@ footer{{color:var(--dim);font-size:13px;margin-top:32px;font-family:var(--mono)}
       {_stat("TVL", _fmt_usd(tvl.get("tvl_usd"), 1), "", tvl.get("change_24h_pct"))}
       {_stat("7-day change", _fmt_pct(tvl.get("change_7d_pct")))}
     </div>
-    {_sparkline(tvl_points)}
+    {_sparkline(tvl_points, tvl_labels)}
   </section>
 </div>
 
@@ -359,6 +444,7 @@ footer{{color:var(--dim);font-size:13px;margin-top:32px;font-family:var(--mono)}
 {protocols_block}
 {categories_block}
 {tokenized_block}
+{news_block}
 {roadmap_block}
 
 <footer>
@@ -367,4 +453,102 @@ footer{{color:var(--dim);font-size:13px;margin-top:32px;font-family:var(--mono)}
   <a href="report.md" style="color:var(--accent)">report.md</a>
 </footer>
 
-</div></body></html>"""
+</div>
+
+<script>
+// Hover readout on the charts. No charting library: each wrapper carries its
+// own series as JSON and the handler reads it back.
+document.querySelectorAll('.chart').forEach(function (chart) {{
+  var series;
+  try {{ series = JSON.parse(chart.dataset.series || '[]'); }} catch (e) {{ return; }}
+  if (series.length < 2) return;
+
+  var svg = chart.querySelector('svg');
+  var tip = chart.querySelector('.tip');
+  var cursor = chart.querySelector('.cursor');
+  var prefix = chart.dataset.prefix || '';
+  var vbWidth = svg.viewBox.baseVal.width;
+
+  function format(value) {{
+    var abs = Math.abs(value);
+    if (abs >= 1e9) return prefix + (value / 1e9).toFixed(2) + 'B';
+    if (abs >= 1e6) return prefix + (value / 1e6).toFixed(2) + 'M';
+    if (abs >= 1e3) return prefix + (value / 1e3).toFixed(2) + 'K';
+    return prefix + value.toFixed(2);
+  }}
+
+  function move(event) {{
+    var rect = svg.getBoundingClientRect();
+    var clientX = event.touches ? event.touches[0].clientX : event.clientX;
+    var ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+    var index = Math.round(ratio * (series.length - 1));
+    var point = series[index];
+    if (!point) return;
+
+    tip.hidden = false;
+    tip.innerHTML = (point.l ? point.l + ' &middot; ' : '') + '<b>' + format(point.v) + '</b>';
+    tip.style.left = (index / (series.length - 1)) * rect.width + 'px';
+    tip.style.top = rect.height + 'px';
+
+    var x = (index / (series.length - 1)) * vbWidth;
+    cursor.setAttribute('x1', x);
+    cursor.setAttribute('x2', x);
+    cursor.setAttribute('opacity', '1');
+  }}
+
+  function leave() {{
+    tip.hidden = true;
+    cursor.setAttribute('opacity', '0');
+  }}
+
+  svg.addEventListener('mousemove', move);
+  svg.addEventListener('touchmove', move, {{ passive: true }});
+  svg.addEventListener('mouseleave', leave);
+  svg.addEventListener('touchend', leave);
+}});
+
+// Click a column header to sort. Numeric when the cell parses as a number,
+// alphabetical otherwise.
+document.querySelectorAll('table.sortable').forEach(function (table) {{
+  var headers = table.querySelectorAll('th');
+  headers.forEach(function (header, index) {{
+    header.addEventListener('click', function () {{
+      var body = table.tBodies[0];
+      if (!body) return;
+      var rows = Array.prototype.slice.call(body.rows);
+      var descending = !header.classList.contains('desc');
+
+      headers.forEach(function (h) {{ h.classList.remove('asc', 'desc'); }});
+      header.classList.add(descending ? 'desc' : 'asc');
+
+      // Cells carry formatted values ("$1.1B", "904.4M", "12d ago"), so the
+      // magnitude suffix has to be honoured. Stripping it and comparing the
+      // bare digits would sort $904.4M above $1.1B.
+      var SCALE = {{ k: 1e3, m: 1e6, b: 1e9, t: 1e12 }};
+
+      function keyOf(row) {{
+        var cell = row.cells[index];
+        var text = cell ? cell.innerText.trim() : '';
+        var match = text.match(/-?[\\d,]*\\.?\\d+/);
+        if (!match) return text.toLowerCase();
+
+        var numeric = parseFloat(match[0].replace(/,/g, ''));
+        if (isNaN(numeric)) return text.toLowerCase();
+
+        var suffix = (text.charAt(text.indexOf(match[0]) + match[0].length) || '').toLowerCase();
+        return SCALE[suffix] ? numeric * SCALE[suffix] : numeric;
+      }}
+
+      rows.sort(function (a, b) {{
+        var ka = keyOf(a), kb = keyOf(b);
+        if (ka < kb) return descending ? 1 : -1;
+        if (ka > kb) return descending ? -1 : 1;
+        return 0;
+      }});
+
+      rows.forEach(function (row) {{ body.appendChild(row); }});
+    }});
+  }});
+}});
+</script>
+</body></html>"""

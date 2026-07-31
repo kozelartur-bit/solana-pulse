@@ -1,0 +1,699 @@
+{
+  "generated_at": "2026-07-31 22:24 UTC",
+  "generated_at_iso": "2026-07-31T22:24:46.543186+00:00",
+  "network": {
+    "health": "ok",
+    "slot": 436441433,
+    "block_height": 414497557,
+    "block_time_unix": 1785536677,
+    "epoch": 1010,
+    "epoch_progress_pct": 28.11,
+    "slots_in_epoch": 432000,
+    "tps": 3305.1,
+    "avg_slot_time_sec": 0.423
+  },
+  "validators": {
+    "active_count": 693,
+    "delinquent_count": 11,
+    "delinquent_pct": 1.56,
+    "total_stake_sol": 432517024.45,
+    "superminority_count": 18,
+    "median_commission": 5,
+    "top_validators": [
+      {
+        "vote_pubkey": "CcaHc2L43ZWjwCHART3oZoJvHLAe9hzT2DJNUpBzoTN1",
+        "stake_sol": 16880677.66,
+        "stake_pct": 3.9,
+        "commission": 7
+      },
+      {
+        "vote_pubkey": "he1iusunGwqrNtafDtLdhsUQDFvo13z9sUa36PauBtk",
+        "stake_sol": 15969286.94,
+        "stake_pct": 3.69,
+        "commission": 0
+      },
+      {
+        "vote_pubkey": "CatzoSMUkTRidT5DwBxAC2pEtnwMBTpkCepHkFgZDiqb",
+        "stake_sol": 12528598.6,
+        "stake_pct": 2.9,
+        "commission": 5
+      },
+      {
+        "vote_pubkey": "3N7s9zXMZ4QqvHQR15t5GNHyqc89KduzMP7423eWiD5g",
+        "stake_sol": 12263967.39,
+        "stake_pct": 2.84,
+        "commission": 0
+      },
+      {
+        "vote_pubkey": "26pV97Ce83ZQ6Kz9XT4td8tdoUFPTng8Fb8gPyc53dJx",
+        "stake_sol": 9229599.19,
+        "stake_pct": 2.13,
+        "commission": 7
+      },
+      {
+        "vote_pubkey": "51JBzSTU5rAM8gLAVQKgp4WoZerQcSqWC7BitBzgUNAm",
+        "stake_sol": 8815054.91,
+        "stake_pct": 2.04,
+        "commission": 10
+      },
+      {
+        "vote_pubkey": "8GbwASqdpw4dVcwbWUxbHXMrjyQx2aKkoBR5H1GJF8iD",
+        "stake_sol": 8151227.03,
+        "stake_pct": 1.88,
+        "commission": 0
+      },
+      {
+        "vote_pubkey": "9QU2QSxhb24FUX3Tu2FpczXjpK3VYrvRudywSZaM29mF",
+        "stake_sol": 7903831.67,
+        "stake_pct": 1.83,
+        "commission": 7
+      },
+      {
+        "vote_pubkey": "CvSb7wdQAFpHuSpTYTJnX5SYH4hCfQ9VuGnqrKaKwycB",
+        "stake_sol": 7295625.15,
+        "stake_pct": 1.69,
+        "commission": 5
+      },
+      {
+        "vote_pubkey": "DumiCKHVqoCQKD8roLApzR5Fit8qGV5fVQsJV9sTZk4a",
+        "stake_sol": 6638434.93,
+        "stake_pct": 1.53,
+        "commission": 0
+      }
+    ]
+  },
+  "supply": {
+    "circulating_sol": 579702750.12,
+    "total_sol": 631376567.25,
+    "non_circulating_sol": 51673817.13
+  },
+  "fees": {
+    "median_priority_fee": 0,
+    "p90_priority_fee": 0,
+    "zero_fee_share_pct": 90.7,
+    "sample_slots": 150
+  },
+  "activity": {
+    "estimate_available": true,
+    "sampled_blocks": 8,
+    "sample_spacing_slots": 400,
+    "unique_payers_in_sample": 2164,
+    "avg_unique_payers_per_block": 942.9,
+    "avg_transactions_per_block": 1305.0,
+    "uniqueness_ratio": 0.287,
+    "repeat_rate_pct": 71.3,
+    "method": "Distinct fee payers across 8 blocks sampled 400 slots apart. Measured, not extrapolated."
+  },
+  "revenue": {
+    "fees_24h_usd": 532565,
+    "fees_7d_usd": 3566170,
+    "fees_30d_usd": 15238299,
+    "fees_change_24h_pct": -3.48,
+    "revenue_24h_usd": 54865,
+    "revenue_7d_usd": 368297,
+    "note": "In-protocol fees only; excludes out-of-protocol MEV tips."
+  },
+  "price": {
+    "price_usd": 72.8,
+    "market_cap_usd": 42201539306,
+    "volume_24h_usd": 1562558598,
+    "change_24h_pct": -2.54109,
+    "change_7d_pct": -1.15287,
+    "change_30d_pct": -7.09928,
+    "ath_usd": 293.31,
+    "ath_change_pct": -75.18014
+  },
+  "price_history": [
+    {
+      "ts": 1782950400,
+      "price": 77.3615
+    },
+    {
+      "ts": 1783036800,
+      "price": 80.6197
+    },
+    {
+      "ts": 1783123200,
+      "price": 82.2912
+    },
+    {
+      "ts": 1783209600,
+      "price": 81.7035
+    },
+    {
+      "ts": 1783296000,
+      "price": 81.5156
+    },
+    {
+      "ts": 1783382400,
+      "price": 81.8884
+    },
+    {
+      "ts": 1783468800,
+      "price": 80.586
+    },
+    {
+      "ts": 1783555200,
+      "price": 77.7889
+    },
+    {
+      "ts": 1783641600,
+      "price": 77.9922
+    },
+    {
+      "ts": 1783728000,
+      "price": 78.0688
+    },
+    {
+      "ts": 1783814400,
+      "price": 76.7156
+    },
+    {
+      "ts": 1783900800,
+      "price": 76.8699
+    },
+    {
+      "ts": 1783987200,
+      "price": 74.9313
+    },
+    {
+      "ts": 1784073600,
+      "price": 77.8086
+    },
+    {
+      "ts": 1784160000,
+      "price": 77.2386
+    },
+    {
+      "ts": 1784246400,
+      "price": 75.2692
+    },
+    {
+      "ts": 1784332800,
+      "price": 75.002
+    },
+    {
+      "ts": 1784419200,
+      "price": 75.4811
+    },
+    {
+      "ts": 1784505600,
+      "price": 76.3118
+    },
+    {
+      "ts": 1784592000,
+      "price": 77.7489
+    },
+    {
+      "ts": 1784678400,
+      "price": 78.0882
+    },
+    {
+      "ts": 1784764800,
+      "price": 77.9393
+    },
+    {
+      "ts": 1784851200,
+      "price": 75.7639
+    },
+    {
+      "ts": 1784937600,
+      "price": 73.9267
+    },
+    {
+      "ts": 1785024000,
+      "price": 74.4682
+    },
+    {
+      "ts": 1785110400,
+      "price": 76.6039
+    },
+    {
+      "ts": 1785196800,
+      "price": 74.1976
+    },
+    {
+      "ts": 1785283200,
+      "price": 73.8964
+    },
+    {
+      "ts": 1785369600,
+      "price": 73.6055
+    },
+    {
+      "ts": 1785536600,
+      "price": 72.7972
+    }
+  ],
+  "tvl": {
+    "tvl_usd": 4735256888,
+    "change_24h_pct": -0.98,
+    "change_7d_pct": -3.57,
+    "history_30d": [
+      {
+        "date": 1782864000,
+        "tvl": 4775691166
+      },
+      {
+        "date": 1782950400,
+        "tvl": 4911241049
+      },
+      {
+        "date": 1783036800,
+        "tvl": 5040855386
+      },
+      {
+        "date": 1783123200,
+        "tvl": 5118389830
+      },
+      {
+        "date": 1783209600,
+        "tvl": 5113762101
+      },
+      {
+        "date": 1783296000,
+        "tvl": 5106764170
+      },
+      {
+        "date": 1783382400,
+        "tvl": 5136404840
+      },
+      {
+        "date": 1783468800,
+        "tvl": 5005474526
+      },
+      {
+        "date": 1783555200,
+        "tvl": 4938964417
+      },
+      {
+        "date": 1783641600,
+        "tvl": 4957889807
+      },
+      {
+        "date": 1783728000,
+        "tvl": 4930087396
+      },
+      {
+        "date": 1783814400,
+        "tvl": 4845586359
+      },
+      {
+        "date": 1783900800,
+        "tvl": 4845017895
+      },
+      {
+        "date": 1783987200,
+        "tvl": 4800295805
+      },
+      {
+        "date": 1784073600,
+        "tvl": 4911638212
+      },
+      {
+        "date": 1784160000,
+        "tvl": 4918400836
+      },
+      {
+        "date": 1784246400,
+        "tvl": 4838604962
+      },
+      {
+        "date": 1784332800,
+        "tvl": 4816350829
+      },
+      {
+        "date": 1784419200,
+        "tvl": 4861116498
+      },
+      {
+        "date": 1784505600,
+        "tvl": 4863903273
+      },
+      {
+        "date": 1784592000,
+        "tvl": 4965960571
+      },
+      {
+        "date": 1784678400,
+        "tvl": 4985709209
+      },
+      {
+        "date": 1784764800,
+        "tvl": 4953943184
+      },
+      {
+        "date": 1784851200,
+        "tvl": 4910750896
+      },
+      {
+        "date": 1784937600,
+        "tvl": 4776279665
+      },
+      {
+        "date": 1785024000,
+        "tvl": 4826667904
+      },
+      {
+        "date": 1785110400,
+        "tvl": 4905377836
+      },
+      {
+        "date": 1785196800,
+        "tvl": 4802552014
+      },
+      {
+        "date": 1785283200,
+        "tvl": 4778154270
+      },
+      {
+        "date": 1785369600,
+        "tvl": 4781994504
+      },
+      {
+        "date": 1785456000,
+        "tvl": 4735256888
+      }
+    ]
+  },
+  "stablecoins": {
+    "total_usd": 15762442481.61
+  },
+  "dex": {
+    "volume_24h_usd": 1579737257.25,
+    "volume_7d_usd": 10930679125.499998,
+    "change_24h_pct": -19.79
+  },
+  "protocols": [
+    {
+      "name": "Sanctum Validator LSTs",
+      "category": "Liquid Staking",
+      "tvl_usd": 1072544501.51,
+      "change_1d_pct": -2.149909380078668,
+      "change_7d_pct": -0.9040100556895823
+    },
+    {
+      "name": "Kamino Lend",
+      "category": "Lending",
+      "tvl_usd": 1040490489.86,
+      "change_1d_pct": -0.21764058416606247,
+      "change_7d_pct": 0.7933749487579718
+    },
+    {
+      "name": "Jupiter Lend",
+      "category": "Lending",
+      "tvl_usd": 904447967.12,
+      "change_1d_pct": -3.985706894847354,
+      "change_7d_pct": -4.274461718075571
+    },
+    {
+      "name": "Raydium AMM",
+      "category": "Dexs",
+      "tvl_usd": 812611086.51,
+      "change_1d_pct": -1.7245744683866917,
+      "change_7d_pct": -0.3519206367531069
+    },
+    {
+      "name": "Binance Staked SOL",
+      "category": "Liquid Staking",
+      "tvl_usd": 743270537.99,
+      "change_1d_pct": -1.9685508083351948,
+      "change_7d_pct": -1.4128270866700632
+    },
+    {
+      "name": "Jito Liquid Staking",
+      "category": "Liquid Staking",
+      "tvl_usd": 725752065.32,
+      "change_1d_pct": -2.2067008442461145,
+      "change_7d_pct": -2.223703810368278
+    },
+    {
+      "name": "Jupiter Perpetual Exchange",
+      "category": "Derivatives",
+      "tvl_usd": 699377851.82,
+      "change_1d_pct": -1.8676804209781608,
+      "change_7d_pct": -1.0610428650291652
+    },
+    {
+      "name": "BlackRock BUIDL",
+      "category": "RWA",
+      "tvl_usd": 674960402.29,
+      "change_1d_pct": 0.5197232564611198,
+      "change_7d_pct": 1.4154085098223987
+    },
+    {
+      "name": "Solstice",
+      "category": "Basis Trading",
+      "tvl_usd": 516732197.99,
+      "change_1d_pct": -1.163872160789353,
+      "change_7d_pct": -1.1732642848324986
+    },
+    {
+      "name": "Jupiter Staked SOL",
+      "category": "Liquid Staking",
+      "tvl_usd": 379382185.29,
+      "change_1d_pct": -2.158655225246193,
+      "change_7d_pct": -0.9679668131381192
+    },
+    {
+      "name": "Sentora",
+      "category": "Risk Curators",
+      "tvl_usd": 369276166.33,
+      "change_1d_pct": -1.9421853436075764,
+      "change_7d_pct": 0.08710980105990984
+    },
+    {
+      "name": "xStocks",
+      "category": "RWA",
+      "tvl_usd": 357641303.31,
+      "change_1d_pct": 0.11588535342379203,
+      "change_7d_pct": 5.053934365753207
+    }
+  ],
+  "categories": [
+    {
+      "category": "Liquid Staking",
+      "tvl_usd": 4188370180.13,
+      "share_pct": 32.68
+    },
+    {
+      "category": "Lending",
+      "tvl_usd": 2180837652.98,
+      "share_pct": 17.02
+    },
+    {
+      "category": "RWA",
+      "tvl_usd": 1767496744.15,
+      "share_pct": 13.79
+    },
+    {
+      "category": "Dexs",
+      "tvl_usd": 1743280373.28,
+      "share_pct": 13.6
+    },
+    {
+      "category": "Derivatives",
+      "tvl_usd": 806361395.17,
+      "share_pct": 6.29
+    },
+    {
+      "category": "Basis Trading",
+      "tvl_usd": 600476931.7,
+      "share_pct": 4.69
+    },
+    {
+      "category": "Risk Curators",
+      "tvl_usd": 473146429.45,
+      "share_pct": 3.69
+    },
+    {
+      "category": "Yield",
+      "tvl_usd": 401204426.36,
+      "share_pct": 3.13
+    },
+    {
+      "category": "Staking Pool",
+      "tvl_usd": 334591864.32,
+      "share_pct": 2.61
+    },
+    {
+      "category": "Yield Aggregator",
+      "tvl_usd": 100131933.09,
+      "share_pct": 0.78
+    }
+  ],
+  "tokenized": {
+    "total_usd": 1767534076.76,
+    "protocols": [
+      {
+        "name": "BlackRock BUIDL",
+        "tvl_usd": 674960402.29
+      },
+      {
+        "name": "xStocks",
+        "tvl_usd": 357641303.31
+      },
+      {
+        "name": "OnRe",
+        "tvl_usd": 247454559.26
+      },
+      {
+        "name": "Ondo Yield Assets",
+        "tvl_usd": 181420850.98
+      },
+      {
+        "name": "Hastra",
+        "tvl_usd": 170166807.9
+      },
+      {
+        "name": "Theo Network thBill",
+        "tvl_usd": 26324850
+      },
+      {
+        "name": "Apollo Diversified Credit Securitize Fund",
+        "tvl_usd": 24841292.24
+      },
+      {
+        "name": "Ondo Global Markets",
+        "tvl_usd": 24633692.87
+      }
+    ]
+  },
+  "roadmap": [
+    {
+      "name": "Alpenglow",
+      "kind": "Consensus overhaul",
+      "status": "In development",
+      "summary": "Replaces TowerBFT and Proof of History voting with Votor and Rotor, targeting finality in roughly 100-150ms instead of ~12s.",
+      "why_it_matters": "Sub-second finality changes what is buildable on-chain: payments and orderbook trading stop needing off-chain confirmation layers.",
+      "reference": "https://github.com/solana-foundation/solana-improvement-documents"
+    },
+    {
+      "name": "SIMD-0525",
+      "kind": "Solana Improvement Document",
+      "status": "Proposed",
+      "summary": "Tracked in the SIMD repository. Check the linked repo for the current stage — SIMDs move between draft, review, accepted and activated.",
+      "why_it_matters": "SIMDs are where protocol-level economics and validator requirements are decided before they reach mainnet.",
+      "reference": "https://github.com/solana-foundation/solana-improvement-documents"
+    },
+    {
+      "name": "Firedancer",
+      "kind": "Independent validator client",
+      "status": "Rolling out",
+      "summary": "A second full validator implementation written from scratch by Jump Crypto, running alongside Agave.",
+      "why_it_matters": "Client diversity is the single biggest structural risk reducer for a chain: one implementation bug can no longer halt the network.",
+      "reference": "https://github.com/firedancer-io/firedancer"
+    },
+    {
+      "name": "Token Extensions (Token-2022)",
+      "kind": "Token standard",
+      "status": "Live, adoption ongoing",
+      "summary": "Adds transfer hooks, confidential transfers, interest-bearing tokens and metadata directly at the token program level.",
+      "why_it_matters": "Compliance features at the protocol layer are what institutional and RWA issuers have been waiting for.",
+      "reference": "https://spl.solana.com/token-2022"
+    }
+  ],
+  "client_releases": [
+    {
+      "client": "Agave",
+      "tag": "v4.2.0-rc.1",
+      "published_at": "2026-07-31T15:02:44Z",
+      "age_days": 0,
+      "prerelease": true,
+      "url": "https://github.com/anza-xyz/agave/releases/tag/v4.2.0-rc.1"
+    },
+    {
+      "client": "Firedancer",
+      "tag": "v0.1104.40200",
+      "published_at": "2026-07-30T16:10:12Z",
+      "age_days": 1,
+      "prerelease": true,
+      "url": "https://github.com/firedancer-io/firedancer/releases/tag/v0.1104.40200"
+    },
+    {
+      "client": "Firedancer",
+      "tag": "v0.1007.40100",
+      "published_at": "2026-07-30T15:51:06Z",
+      "age_days": 1,
+      "prerelease": false,
+      "url": "https://github.com/firedancer-io/firedancer/releases/tag/v0.1007.40100"
+    },
+    {
+      "client": "Agave",
+      "tag": "v4.2.0-rc.0",
+      "published_at": "2026-07-24T12:47:31Z",
+      "age_days": 7,
+      "prerelease": false,
+      "url": "https://github.com/anza-xyz/agave/releases/tag/v4.2.0-rc.0"
+    },
+    {
+      "client": "Firedancer",
+      "tag": "v1.1.2",
+      "published_at": "2026-07-22T22:45:40Z",
+      "age_days": 8,
+      "prerelease": true,
+      "url": "https://github.com/firedancer-io/firedancer/releases/tag/v1.1.2"
+    },
+    {
+      "client": "Agave",
+      "tag": "v4.3.0-alpha.2",
+      "published_at": "2026-07-21T13:50:13Z",
+      "age_days": 10,
+      "prerelease": true,
+      "url": "https://github.com/anza-xyz/agave/releases/tag/v4.3.0-alpha.2"
+    }
+  ],
+  "merged_simds": [
+    {
+      "number": 551,
+      "title": "re-amend SIMD-0340: additional inter- and intra- validation",
+      "merged_at": "2026-07-31T16:27:22Z",
+      "age_days": 0,
+      "url": "https://github.com/solana-foundation/solana-improvement-documents/pull/551"
+    },
+    {
+      "number": 433,
+      "title": "SIMD-0433: Loader V3: Set Program Data to ELF Length",
+      "merged_at": "2026-07-31T08:06:24Z",
+      "age_days": 0,
+      "url": "https://github.com/solana-foundation/solana-improvement-documents/pull/433"
+    },
+    {
+      "number": 266,
+      "title": "SIMD-0266: Efficient Token program",
+      "merged_at": "2026-03-13T14:06:22Z",
+      "age_days": 140,
+      "url": "https://github.com/solana-foundation/solana-improvement-documents/pull/266"
+    },
+    {
+      "number": 550,
+      "title": "SIMD-0550: Double disinflation",
+      "merged_at": "2026-07-23T01:49:15Z",
+      "age_days": 8,
+      "url": "https://github.com/solana-foundation/solana-improvement-documents/pull/550"
+    },
+    {
+      "number": 553,
+      "title": "SIMD-0553: Resource and Inclusion Fee",
+      "merged_at": "2026-07-20T18:46:50Z",
+      "age_days": 11,
+      "url": "https://github.com/solana-foundation/solana-improvement-documents/pull/553"
+    },
+    {
+      "number": 572,
+      "title": "SIMD-0392: Clarify included stake accounts and calculations",
+      "merged_at": "2026-07-16T22:18:11Z",
+      "age_days": 15,
+      "url": "https://github.com/solana-foundation/solana-improvement-documents/pull/572"
+    }
+  ],
+  "collection_failures": [],
+  "alerts": [
+    {
+      "severity": "warning",
+      "metric": "superminority",
+      "message": "Only 18 validators control a third of stake — concentration risk",
+      "value": 18
+    }
+  ]
+}

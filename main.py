@@ -16,11 +16,12 @@ import json
 import pathlib
 import sys
 import traceback
+from typing import Any
 
 sys.path.insert(0, str(pathlib.Path(__file__).parent))
 
 from analyze import anomaly
-from collect import ecosystem, offchain, rpc
+from collect import ecosystem, news, offchain, rpc
 from render import html as html_render
 from render import markdown as md_render
 
@@ -30,9 +31,9 @@ def _log(enabled: bool, message: str) -> None:
         print(message, flush=True)
 
 
-def build_report(verbose: bool = True) -> dict[str, Any]:  # type: ignore[name-defined]
+def build_report(verbose: bool = True) -> dict[str, Any]:
     client = rpc.SolanaRPC()
-    report: dict = {
+    report: dict[str, Any] = {
         "generated_at": dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
         "generated_at_iso": dt.datetime.now(dt.timezone.utc).isoformat(),
     }
@@ -54,6 +55,8 @@ def build_report(verbose: bool = True) -> dict[str, Any]:  # type: ignore[name-d
         ("categories", ecosystem.category_breakdown),
         ("tokenized", ecosystem.tokenized_assets),
         ("roadmap", ecosystem.roadmap),
+        ("client_releases", news.client_releases),
+        ("merged_simds", news.merged_simds),
     )
 
     failures: list[str] = []
