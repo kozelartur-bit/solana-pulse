@@ -21,7 +21,7 @@ from typing import Any
 sys.path.insert(0, str(pathlib.Path(__file__).parent))
 
 from analyze import anomaly
-from collect import ecosystem, news, offchain, rpc
+from collect import dune, ecosystem, news, offchain, rpc
 from render import html as html_render
 from render import markdown as md_render
 
@@ -57,6 +57,7 @@ def build_report(verbose: bool = True) -> dict[str, Any]:
         ("roadmap", ecosystem.roadmap),
         ("client_releases", news.client_releases),
         ("merged_simds", news.merged_simds),
+        ("dune", dune.collect),
     )
 
     failures: list[str] = []

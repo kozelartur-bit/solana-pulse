@@ -1,0 +1,12 @@
+[
+  {
+    "label": "Solana daily active addresses",
+    "query_id": 3468810,
+    "description": "Distinct signers per day. Replace the id with any public Dune query that returns a daily series; the renderer adapts to whatever columns come back."
+  },
+  {
+    "label": "Solana DEX volume by project",
+    "query_id": 4508569,
+    "description": "Daily DEX volume split by protocol."
+  }
+]

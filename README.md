@@ -142,12 +142,28 @@ base plus priority. Solana REV as the term is usually used also includes Jito
 tips, which are paid out of protocol and are not in any keyless feed. The
 figure here is the in-protocol floor and is labelled as such on the page.
 
-**Dune Analytics is not used.** The brief lists it as a preferred source, but
-its API requires a key, and key-dependent collection contradicts the "no API
-keys" requirement in the same brief. The metrics Dune dashboards would supply —
-TVL, DEX volume, stablecoin float — are taken from DeFiLlama's public endpoints
-instead. Scraping Dune's rendered dashboards was rejected as too brittle to
-trust in an automated report.
+**Dune Analytics is optional, not scraped.** The brief names Dune as a
+preferred source and, in the same document, requires the report to run without
+API keys. `collect/dune.py` resolves that by being switched off by default:
+set `DUNE_API_KEY` and list query IDs in `data/dune_queries.json` to enable it;
+leave it unset and the report runs exactly as before with a note explaining why
+the section is empty.
+
+Scraping the public site was evaluated first and rejected on evidence:
+
+- Plain HTTP to `dune.com` returns **403** — Cloudflare fronts it, and a CI
+  runner using `urllib` has no browser fingerprint or cookies to get past that.
+- The unofficial `/api/embeds/{query}/{viz}/data` endpoint that older tools used
+  now returns **404**. It was removed.
+- The current path requires a GraphQL call for an `execution_id` followed by a
+  POST whose payload shape is undocumented, and which rejected requests during
+  testing even from inside a logged-in browser session.
+
+A scraper on that foundation would work on a developer's machine and fail
+silently on the runner, leaving a permanently stale section in a report whose
+entire selling point is that it updates itself. Every metric Dune would supply
+here — TVL, DEX volume, stablecoin float, activity — is already sourced
+keylessly from DeFiLlama, CoinGecko and direct RPC.
 
 ## Design decisions worth explaining
 

@@ -1,6 +1,6 @@
 # Solana Pulse
 
-_Generated 2026-07-31 22:24 UTC_
+_Generated 2026-07-31 22:43 UTC_
 
 ## Anomalies
 
@@ -11,31 +11,31 @@ _Generated 2026-07-31 22:24 UTC_
 | Metric | Value |
 |---|---|
 | Health | ok |
-| TPS (10-sample avg) | 3,305.1 |
-| Average slot time | 0.423 s |
-| Slot | 436,441,433 |
-| Block height | 414,497,557 |
-| Epoch | 1,010 (28.11% complete) |
+| TPS (10-sample avg) | 3,133.4 |
+| Average slot time | 0.426 s |
+| Slot | 436,444,035 |
+| Block height | 414,500,158 |
+| Epoch | 1,010 (28.71% complete) |
 
 ## Market
 
 | Metric | Value | 24h |
 |---|---|---|
-| SOL price | $72.80 | -2.54% |
+| SOL price | $72.84 | -2.54% |
 | Market cap | $42.2B | |
 | TVL | $4.7B | -0.98% |
 | Stablecoin supply | $15.8B | |
 | DEX volume 24h | $1.6B | -19.79% |
-| Circulating SOL | 579,702,750 | |
+| Circulating SOL | 579,702,741 | |
 
-SOL 7d: -1.15% · 30d: -7.10% · from ATH: -75.18%
+SOL 7d: -1.10% · 30d: -7.05% · from ATH: -75.17%
 
 ## On-chain activity
 
-- Distinct fee payers per block: **942.9**
-- Distinct across sample: **2,164** (8 blocks, 400 slots apart)
-- Repeat rate: **71.3%** of appearances are addresses seen in more than one block
-- Transactions per block: **1,305.0**
+- Distinct fee payers per block: **920.1**
+- Distinct across sample: **2,047** (8 blocks, 400 slots apart)
+- Repeat rate: **72.2%** of appearances are addresses seen in more than one block
+- Transactions per block: **1,214.0**
 
 > Measured, not extrapolated. Multiplying per-block distinct payers by slots per day
 > assumes disjoint populations; the repeat rate shows they are not, and that arithmetic
@@ -55,8 +55,8 @@ SOL 7d: -1.15% · 30d: -7.10% · from ATH: -75.18%
 
 ## Validators
 
-- Active: **693**
-- Delinquent: **11** (1.56% of set)
+- Active: **692**
+- Delinquent: **12** (1.7% of set)
 - Superminority: **18** validators hold a third of stake
 - Total stake: **432,517,024 SOL**
 - Median commission: **5%**

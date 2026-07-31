@@ -187,6 +187,43 @@ def render(report: dict[str, Any]) -> str:
         else ""
     )
 
+    # -------------------------------------------------------------------- dune
+    dune_data = report.get("dune") or {}
+    if dune_data.get("enabled") and dune_data.get("queries"):
+        blocks = []
+        for q in dune_data["queries"]:
+            if not q.get("ok"):
+                continue
+            columns = q.get("columns") or []
+            head = "".join(f"<th>{html.escape(str(c))}</th>" for c in columns)
+            body = "".join(
+                "<tr>" + "".join(f"<td>{html.escape(str(row.get(c, '')))}</td>" for c in columns) + "</tr>"
+                for row in (q.get("rows") or [])
+            )
+            blocks.append(
+                f'<h3 class="sub-h">{html.escape(str(q.get("label", "")))}'
+                f' <span class="mono">#{q.get("query_id")}</span></h3>'
+                f'<table class="sortable"><thead><tr>{head}</tr></thead><tbody>{body}</tbody></table>'
+            )
+        dune_block = (
+            f'<section class="card"><h2>Dune Analytics</h2>{"".join(blocks)}</section>'
+            if blocks
+            else ""
+        )
+    else:
+        reason = dune_data.get("reason", "")
+        dune_block = (
+            f'<section class="card"><h2>Dune Analytics</h2>'
+            f'<p class="muted">Not enabled in this run.</p>'
+            f'<p class="note">{html.escape(str(reason))} Scraping the public site was evaluated '
+            "and rejected: plain HTTP returns 403 behind Cloudflare, the old embed endpoint now "
+            "404s, and a scraper that needs browser cookies would pass locally then fail silently "
+            "in CI. Every metric Dune would supply here is already sourced keylessly from "
+            "DeFiLlama, CoinGecko and direct RPC.</p></section>"
+            if reason
+            else ""
+        )
+
     # -------------------------------------------------------------- validators
     rows = "".join(
         f"<tr><td class='mono'>{html.escape(str(v.get('vote_pubkey', ''))[:16])}…</td>"
@@ -445,6 +482,7 @@ footer{{color:var(--dim);font-size:13px;margin-top:32px;font-family:var(--mono)}
 {categories_block}
 {tokenized_block}
 {news_block}
+{dune_block}
 {roadmap_block}
 
 <footer>

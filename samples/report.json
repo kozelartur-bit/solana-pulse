@@ -1,21 +1,21 @@
 {
-  "generated_at": "2026-07-31 22:24 UTC",
-  "generated_at_iso": "2026-07-31T22:24:46.543186+00:00",
+  "generated_at": "2026-07-31 22:43 UTC",
+  "generated_at_iso": "2026-07-31T22:43:12.023118+00:00",
   "network": {
     "health": "ok",
-    "slot": 436441433,
-    "block_height": 414497557,
-    "block_time_unix": 1785536677,
+    "slot": 436444035,
+    "block_height": 414500158,
+    "block_time_unix": 1785537780,
     "epoch": 1010,
-    "epoch_progress_pct": 28.11,
+    "epoch_progress_pct": 28.71,
     "slots_in_epoch": 432000,
-    "tps": 3305.1,
-    "avg_slot_time_sec": 0.423
+    "tps": 3133.4,
+    "avg_slot_time_sec": 0.426
   },
   "validators": {
-    "active_count": 693,
-    "delinquent_count": 11,
-    "delinquent_pct": 1.56,
+    "active_count": 692,
+    "delinquent_count": 12,
+    "delinquent_pct": 1.7,
     "total_stake_sol": 432517024.45,
     "superminority_count": 18,
     "median_commission": 5,
@@ -83,25 +83,25 @@
     ]
   },
   "supply": {
-    "circulating_sol": 579702750.12,
-    "total_sol": 631376567.25,
+    "circulating_sol": 579702741.43,
+    "total_sol": 631376558.56,
     "non_circulating_sol": 51673817.13
   },
   "fees": {
     "median_priority_fee": 0,
     "p90_priority_fee": 0,
-    "zero_fee_share_pct": 90.7,
+    "zero_fee_share_pct": 94.0,
     "sample_slots": 150
   },
   "activity": {
     "estimate_available": true,
     "sampled_blocks": 8,
     "sample_spacing_slots": 400,
-    "unique_payers_in_sample": 2164,
-    "avg_unique_payers_per_block": 942.9,
-    "avg_transactions_per_block": 1305.0,
-    "uniqueness_ratio": 0.287,
-    "repeat_rate_pct": 71.3,
+    "unique_payers_in_sample": 2047,
+    "avg_unique_payers_per_block": 920.1,
+    "avg_transactions_per_block": 1214.0,
+    "uniqueness_ratio": 0.278,
+    "repeat_rate_pct": 72.2,
     "method": "Distinct fee payers across 8 blocks sampled 400 slots apart. Measured, not extrapolated."
   },
   "revenue": {
@@ -114,14 +114,14 @@
     "note": "In-protocol fees only; excludes out-of-protocol MEV tips."
   },
   "price": {
-    "price_usd": 72.8,
-    "market_cap_usd": 42201539306,
-    "volume_24h_usd": 1562558598,
-    "change_24h_pct": -2.54109,
-    "change_7d_pct": -1.15287,
-    "change_30d_pct": -7.09928,
+    "price_usd": 72.84,
+    "market_cap_usd": 42224120301,
+    "volume_24h_usd": 1562206976,
+    "change_24h_pct": -2.53936,
+    "change_7d_pct": -1.09525,
+    "change_30d_pct": -7.04513,
     "ath_usd": 293.31,
-    "ath_change_pct": -75.18014
+    "ath_change_pct": -75.16568
   },
   "price_history": [
     {
@@ -241,8 +241,8 @@
       "price": 73.6055
     },
     {
-      "ts": 1785536600,
-      "price": 72.7972
+      "ts": 1785537710,
+      "price": 72.8665
     }
   ],
   "tvl": {
@@ -473,22 +473,22 @@
   "categories": [
     {
       "category": "Liquid Staking",
-      "tvl_usd": 4188370180.13,
+      "tvl_usd": 4188314580.89,
       "share_pct": 32.68
     },
     {
       "category": "Lending",
-      "tvl_usd": 2180837652.98,
+      "tvl_usd": 2180821484.87,
       "share_pct": 17.02
     },
     {
       "category": "RWA",
-      "tvl_usd": 1767496744.15,
+      "tvl_usd": 1767653932.1,
       "share_pct": 13.79
     },
     {
       "category": "Dexs",
-      "tvl_usd": 1743280373.28,
+      "tvl_usd": 1743280151.34,
       "share_pct": 13.6
     },
     {
@@ -498,7 +498,7 @@
     },
     {
       "category": "Basis Trading",
-      "tvl_usd": 600476931.7,
+      "tvl_usd": 600476990.6,
       "share_pct": 4.69
     },
     {
@@ -508,7 +508,7 @@
     },
     {
       "category": "Yield",
-      "tvl_usd": 401204426.36,
+      "tvl_usd": 401202797.65,
       "share_pct": 3.13
     },
     {
@@ -523,7 +523,7 @@
     }
   ],
   "tokenized": {
-    "total_usd": 1767534076.76,
+    "total_usd": 1767691264.71,
     "protocols": [
       {
         "name": "BlackRock BUIDL",
@@ -543,7 +543,7 @@
       },
       {
         "name": "Hastra",
-        "tvl_usd": 170166807.9
+        "tvl_usd": 170159524.42
       },
       {
         "name": "Theo Network thBill",
@@ -687,6 +687,11 @@
       "url": "https://github.com/solana-foundation/solana-improvement-documents/pull/572"
     }
   ],
+  "dune": {
+    "enabled": false,
+    "reason": "DUNE_API_KEY is not set. The report is designed to run without any keys; set the variable to enable this section.",
+    "configured_queries": 2
+  },
   "collection_failures": [],
   "alerts": [
     {
