@@ -1,0 +1,34 @@
+[
+  {
+    "name": "Alpenglow",
+    "kind": "Consensus overhaul",
+    "status": "In development",
+    "summary": "Replaces TowerBFT and Proof of History voting with Votor and Rotor, targeting finality in roughly 100-150ms instead of ~12s.",
+    "why_it_matters": "Sub-second finality changes what is buildable on-chain: payments and orderbook trading stop needing off-chain confirmation layers.",
+    "reference": "https://github.com/solana-foundation/solana-improvement-documents"
+  },
+  {
+    "name": "SIMD-0525",
+    "kind": "Solana Improvement Document",
+    "status": "Proposed",
+    "summary": "Tracked in the SIMD repository. Check the linked repo for the current stage — SIMDs move between draft, review, accepted and activated.",
+    "why_it_matters": "SIMDs are where protocol-level economics and validator requirements are decided before they reach mainnet.",
+    "reference": "https://github.com/solana-foundation/solana-improvement-documents"
+  },
+  {
+    "name": "Firedancer",
+    "kind": "Independent validator client",
+    "status": "Rolling out",
+    "summary": "A second full validator implementation written from scratch by Jump Crypto, running alongside Agave.",
+    "why_it_matters": "Client diversity is the single biggest structural risk reducer for a chain: one implementation bug can no longer halt the network.",
+    "reference": "https://github.com/firedancer-io/firedancer"
+  },
+  {
+    "name": "Token Extensions (Token-2022)",
+    "kind": "Token standard",
+    "status": "Live, adoption ongoing",
+    "summary": "Adds transfer hooks, confidential transfers, interest-bearing tokens and metadata directly at the token program level.",
+    "why_it_matters": "Compliance features at the protocol layer are what institutional and RWA issuers have been waiting for.",
+    "reference": "https://spl.solana.com/token-2022"
+  }
+]

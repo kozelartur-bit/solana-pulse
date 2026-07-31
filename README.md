@@ -71,6 +71,33 @@ Thresholds alone miss regime changes. Z-scores alone go quiet during a slow,
 sustained decline, because the baseline drifts down with the metric. Running
 both is what makes the alerting trustworthy.
 
+## Data caveats, stated rather than hidden
+
+**Centralised exchange custody is excluded.** DeFiLlama lists Binance's Solana
+reserves as a "protocol" with more TVL than the entire chain TVL figure. Those
+assets sit on Solana but are not Solana DeFi, and leaving them in makes the
+report contradict itself. CEX, bridge and custody categories are filtered out.
+
+**Protocol TVL sums above chain TVL, and that is correct.** DeFiLlama keeps
+liquid staking out of headline chain TVL to avoid double-counting stake that is
+already represented in the validator numbers. Both figures appear in the report
+because they answer different questions; the dashboard says so on the page
+rather than leaving a reader to wonder which number is broken.
+
+**Priority fees are sampled against a contended account.**
+`getRecentPrioritizationFees` returns the *minimum* fee that landed in each
+slot. With no account specified that minimum is almost always zero — true, but
+useless. The query targets the USDC mint instead, so the number reflects what
+someone competing for hot state actually paid. The share of zero-fee slots is
+reported alongside, since that is the real congestion signal.
+
+**Dune Analytics is not used.** The brief lists it as a preferred source, but
+its API requires a key, and key-dependent collection contradicts the "no API
+keys" requirement in the same brief. The metrics Dune dashboards would supply —
+TVL, DEX volume, stablecoin float — are taken from DeFiLlama's public endpoints
+instead. Scraping Dune's rendered dashboards was rejected as too brittle to
+trust in an automated report.
+
 ## Design decisions worth explaining
 
 **No dependencies, deliberately.** Everything is `urllib` and `json` from the

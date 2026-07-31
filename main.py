@@ -20,7 +20,7 @@ import traceback
 sys.path.insert(0, str(pathlib.Path(__file__).parent))
 
 from analyze import anomaly
-from collect import offchain, rpc
+from collect import ecosystem, offchain, rpc
 from render import html as html_render
 from render import markdown as md_render
 
@@ -42,11 +42,16 @@ def build_report(verbose: bool = True) -> dict[str, Any]:  # type: ignore[name-d
         ("network", lambda: rpc.network_health(client)),
         ("validators", lambda: rpc.validator_status(client)),
         ("supply", lambda: rpc.supply(client)),
+        ("fees", lambda: ecosystem.fees(client)),
         ("price", offchain.coingecko_sol),
         ("price_history", offchain.coingecko_sol_sparkline),
         ("tvl", offchain.defillama_tvl),
         ("stablecoins", offchain.defillama_stablecoins),
         ("dex", offchain.defillama_dex_volume),
+        ("protocols", ecosystem.top_protocols),
+        ("categories", ecosystem.category_breakdown),
+        ("tokenized", ecosystem.tokenized_assets),
+        ("roadmap", ecosystem.roadmap),
     )
 
     failures: list[str] = []

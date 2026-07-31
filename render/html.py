@@ -91,6 +91,7 @@ def render(report: dict[str, Any]) -> str:
     stables = report.get("stablecoins", {}) or {}
     dex = report.get("dex", {}) or {}
     sup = report.get("supply", {}) or {}
+    fees = report.get("fees", {}) or {}
     alerts = report.get("alerts", []) or []
     generated = report.get("generated_at", "")
 
@@ -127,6 +128,73 @@ def render(report: dict[str, Any]) -> str:
         else '<p class="muted">Validator data unavailable in this run.</p>'
     )
 
+    # ---------------------------------------------------------------- protocols
+    proto_rows = "".join(
+        f"<tr><td>{html.escape(str(p.get('name','')))}</td>"
+        f"<td class='mono'>{html.escape(str(p.get('category','')))}</td>"
+        f"<td>{_fmt_usd(p.get('tvl_usd'), 1)}</td>"
+        f"<td class='{_delta_class(p.get('change_1d_pct'))}'>{_fmt_pct(p.get('change_1d_pct'))}</td>"
+        f"<td class='{_delta_class(p.get('change_7d_pct'))}'>{_fmt_pct(p.get('change_7d_pct'))}</td></tr>"
+        for p in (report.get("protocols") or [])
+    )
+    methodology_note = (
+        '<p class="note">Centralised exchange and bridge custody are excluded: they hold assets '
+        "on Solana but are not Solana DeFi. Protocol totals also exceed the chain TVL figure above, "
+        "because DeFiLlama keeps liquid staking out of headline chain TVL to avoid double counting "
+        "stake that is already represented in the validator section. Both numbers are correct; they "
+        "answer different questions.</p>"
+    )
+    protocols_block = (
+        f'<section class="card"><h2>Top DeFi protocols by TVL</h2>'
+        f"<table><thead><tr><th>Protocol</th><th>Category</th><th>TVL</th><th>24h</th><th>7d</th></tr></thead>"
+        f"<tbody>{proto_rows}</tbody></table>{methodology_note}</section>"
+        if proto_rows
+        else ""
+    )
+
+    # --------------------------------------------------------------- categories
+    cats = report.get("categories") or []
+    cat_bars = "".join(
+        f'<div class="bar-row"><span class="bar-label">{html.escape(str(c.get("category","")))}</span>'
+        f'<span class="bar"><i style="width:{min(100.0, c.get("share_pct") or 0):.1f}%"></i></span>'
+        f'<span class="bar-val">{_fmt_usd(c.get("tvl_usd"), 1)} · {c.get("share_pct")}%</span></div>'
+        for c in cats
+    )
+    categories_block = (
+        f'<section class="card"><h2>Where TVL sits</h2><div class="bars">{cat_bars}</div></section>'
+        if cat_bars
+        else ""
+    )
+
+    # ---------------------------------------------------------------- tokenized
+    tok = report.get("tokenized") or {}
+    tok_rows = "".join(
+        f"<tr><td>{html.escape(str(p.get('name','')))}</td><td>{_fmt_usd(p.get('tvl_usd'), 1)}</td></tr>"
+        for p in (tok.get("protocols") or [])
+    )
+    tokenized_block = (
+        f'<section class="card"><h2>Tokenized real-world assets</h2>'
+        f'<div class="grid" style="margin-bottom:16px">{_stat("RWA on Solana", _fmt_usd(tok.get("total_usd"), 1))}</div>'
+        f"<table><thead><tr><th>Protocol</th><th>TVL</th></tr></thead><tbody>{tok_rows}</tbody></table></section>"
+        if tok_rows
+        else ""
+    )
+
+    # ------------------------------------------------------------------ roadmap
+    road_items = "".join(
+        f'<div class="road"><div class="road-head"><b>{html.escape(str(r.get("name","")))}</b>'
+        f'<span class="tag">{html.escape(str(r.get("status","")))}</span></div>'
+        f'<div class="road-kind">{html.escape(str(r.get("kind","")))}</div>'
+        f'<p>{html.escape(str(r.get("summary","")))}</p>'
+        f'<p class="why"><b>Why it matters:</b> {html.escape(str(r.get("why_it_matters","")))}</p></div>'
+        for r in (report.get("roadmap") or [])
+    )
+    roadmap_block = (
+        f'<section class="card"><h2>Upcoming upgrades</h2><div class="roads">{road_items}</div></section>'
+        if road_items
+        else ""
+    )
+
     return f"""<!doctype html>
 <html lang="en"><head>
 <meta charset="utf-8">
@@ -160,8 +228,26 @@ th{{text-align:left;font-family:var(--mono);font-size:11px;letter-spacing:.08em;
 td{{padding:9px 0;border-bottom:1px solid #171a1f}}
 .mono{{font-family:var(--mono);font-size:13px;color:var(--mid)}}
 .muted{{color:var(--dim);font-size:14px}}
+.note{{color:var(--dim);font-size:12.5px;line-height:1.6;margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}}
 .two{{display:grid;grid-template-columns:1fr 1fr;gap:18px}}
+td.up{{color:var(--accent)}} td.down{{color:#ff7a7a}} td.flat{{color:var(--dim)}}
+.bars{{display:grid;gap:10px}}
+.bar-row{{display:grid;grid-template-columns:150px 1fr 190px;gap:12px;align-items:center;font-size:13.5px}}
+.bar-label{{color:var(--mid)}}
+.bar{{background:#181b20;border-radius:4px;height:9px;overflow:hidden;display:block}}
+.bar i{{display:block;height:100%;background:linear-gradient(90deg,var(--accent),#3fbd88);border-radius:4px}}
+.bar-val{{font-family:var(--mono);font-size:12px;color:var(--dim);text-align:right}}
+.roads{{display:grid;gap:14px}}
+.road{{background:#0d0f12;border:1px solid var(--line);border-radius:10px;padding:16px 18px}}
+.road-head{{display:flex;align-items:center;gap:10px;flex-wrap:wrap}}
+.road-head b{{font-size:15px}}
+.tag{{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);border:1px solid #2f7d5e;border-radius:99px;padding:2px 9px}}
+.road-kind{{font-family:var(--mono);font-size:11.5px;color:var(--dim);margin:4px 0 8px}}
+.road p{{font-size:13.5px;color:var(--mid);margin-bottom:6px}}
+.road .why{{color:var(--dim);font-size:13px}}
+.road .why b{{color:var(--mid)}}
 footer{{color:var(--dim);font-size:13px;margin-top:32px;font-family:var(--mono)}}
+@media(max-width:900px){{.bar-row{{grid-template-columns:110px 1fr;gap:8px}}.bar-val{{grid-column:1/-1;text-align:left}}}}
 @media(max-width:760px){{.two{{grid-template-columns:1fr}}body{{padding:20px 14px 48px}}}}
 </style></head><body><div class="wrap">
 
@@ -211,8 +297,8 @@ footer{{color:var(--dim);font-size:13px;margin-top:32px;font-family:var(--mono)}
     {_stat("DEX volume 24h", _fmt_usd(dex.get("volume_24h_usd"), 1), "", dex.get("change_24h_pct"))}
     {_stat("DEX volume 7d", _fmt_usd(dex.get("volume_7d_usd"), 1))}
     {_stat("Circulating SOL", _fmt_num(sup.get("circulating_sol")))}
-    {_stat("SOL 7d", _fmt_pct(price.get("change_7d_pct")))}
-    {_stat("SOL 30d", _fmt_pct(price.get("change_30d_pct")))}
+    {_stat("Median priority fee", _fmt_num(fees.get("median_priority_fee")), "micro-lamports / CU")}
+    {_stat("p90 priority fee", _fmt_num(fees.get("p90_priority_fee")), f'{fees.get("zero_fee_share_pct", "—")}% of slots at zero')}
   </div>
 </section>
 
@@ -226,6 +312,11 @@ footer{{color:var(--dim);font-size:13px;margin-top:32px;font-family:var(--mono)}
   </div>
   {validator_table}
 </section>
+
+{protocols_block}
+{categories_block}
+{tokenized_block}
+{roadmap_block}
 
 <footer>
   Sources: Solana JSON-RPC · DeFiLlama · CoinGecko. No API keys required.<br>
