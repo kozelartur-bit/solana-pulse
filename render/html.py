@@ -128,6 +128,47 @@ def render(report: dict[str, Any]) -> str:
         else '<p class="muted">Validator data unavailable in this run.</p>'
     )
 
+    # -------------------------------------------------- activity and economics
+    act = report.get("activity") or {}
+    rev = report.get("revenue") or {}
+
+    if act.get("estimate_available"):
+        activity_note = (
+            '<p class="note">Measured, not extrapolated. Multiplying per-block distinct payers by '
+            "slots per day would assume each block has a fresh population — the repeat rate above "
+            "shows it does not, and that arithmetic overstates daily actives by roughly two orders "
+            "of magnitude. A true daily figure needs a full indexer, which this report deliberately "
+            f"is not. {html.escape(str(act.get('method', '')))}</p>"
+        )
+        activity_block = f"""<section class="card">
+  <h2>On-chain activity</h2>
+  <div class="grid">
+    {_stat("Distinct payers / block", _fmt_num(act.get("avg_unique_payers_per_block"), 1), "average across sample")}
+    {_stat("Distinct in sample", _fmt_num(act.get("unique_payers_in_sample")), f'{act.get("sampled_blocks", "—")} blocks')}
+    {_stat("Repeat rate", f'{act.get("repeat_rate_pct", "—")}%', "addresses seen in more than one block")}
+    {_stat("Transactions / block", _fmt_num(act.get("avg_transactions_per_block"), 1))}
+  </div>
+  {activity_note}
+</section>"""
+    else:
+        activity_block = ""
+
+    revenue_block = (
+        f"""<section class="card">
+  <h2>Real economic value</h2>
+  <div class="grid">
+    {_stat("Fees 24h", _fmt_usd(rev.get("fees_24h_usd"), 0), "base + priority", rev.get("fees_change_24h_pct"))}
+    {_stat("Fees 7d", _fmt_usd(rev.get("fees_7d_usd"), 0))}
+    {_stat("Fees 30d", _fmt_usd(rev.get("fees_30d_usd"), 0))}
+    {_stat("Revenue 24h", _fmt_usd(rev.get("revenue_24h_usd"), 0), "base fees only")}
+  </div>
+  <p class="note">{html.escape(str(rev.get("note", "")))} Solana REV as usually quoted also includes
+  out-of-protocol MEV tips, which no keyless source publishes — read this as the in-protocol floor.</p>
+</section>"""
+        if rev.get("fees_24h_usd") is not None
+        else ""
+    )
+
     # ---------------------------------------------------------------- protocols
     proto_rows = "".join(
         f"<tr><td>{html.escape(str(p.get('name','')))}</td>"
@@ -313,6 +354,8 @@ footer{{color:var(--dim);font-size:13px;margin-top:32px;font-family:var(--mono)}
   {validator_table}
 </section>
 
+{activity_block}
+{revenue_block}
 {protocols_block}
 {categories_block}
 {tokenized_block}

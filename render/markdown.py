@@ -82,6 +82,38 @@ def render(report: dict[str, Any]) -> str:
         f"from ATH: {_pct(price.get('ath_change_pct'))}")
     add("")
 
+    # ---------------------------------------------------------------- activity
+    act = report.get("activity") or {}
+    rev = report.get("revenue") or {}
+
+    if act.get("estimate_available"):
+        add("## On-chain activity")
+        add("")
+        add(f"- Distinct fee payers per block: **{_num(act.get('avg_unique_payers_per_block'), 1)}**")
+        add(f"- Distinct across sample: **{_num(act.get('unique_payers_in_sample'))}** "
+            f"({act.get('sampled_blocks')} blocks, {act.get('sample_spacing_slots')} slots apart)")
+        add(f"- Repeat rate: **{act.get('repeat_rate_pct', '—')}%** of appearances are addresses seen in more than one block")
+        add(f"- Transactions per block: **{_num(act.get('avg_transactions_per_block'), 1)}**")
+        add("")
+        add("> Measured, not extrapolated. Multiplying per-block distinct payers by slots per day")
+        add("> assumes disjoint populations; the repeat rate shows they are not, and that arithmetic")
+        add("> overstates daily actives by roughly two orders of magnitude. A true daily figure needs")
+        add("> a full indexer, which this report deliberately is not.")
+        add("")
+
+    if rev.get("fees_24h_usd") is not None:
+        add("## Real economic value")
+        add("")
+        add("| Window | Fees (base + priority) | Revenue (base only) |")
+        add("|---|---|---|")
+        add(f"| 24h | {_usd(rev.get('fees_24h_usd'), 0)} ({_pct(rev.get('fees_change_24h_pct'))}) | {_usd(rev.get('revenue_24h_usd'), 0)} |")
+        add(f"| 7d | {_usd(rev.get('fees_7d_usd'), 0)} | {_usd(rev.get('revenue_7d_usd'), 0)} |")
+        add(f"| 30d | {_usd(rev.get('fees_30d_usd'), 0)} | |")
+        add("")
+        add("> In-protocol fees only. Solana REV as usually quoted also includes out-of-protocol")
+        add("> MEV tips, which no keyless source publishes — read this as the in-protocol floor.")
+        add("")
+
     # -------------------------------------------------------------- validators
     add("## Validators")
     add("")

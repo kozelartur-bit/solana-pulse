@@ -147,6 +147,44 @@ def fees(rpc: Any) -> dict[str, Any]:
     }
 
 
+def revenue() -> dict[str, Any]:
+    """Real Economic Value — what users actually pay to use the chain.
+
+    Two figures, because they mean different things:
+
+    * **Fees** — everything users paid, base plus priority.
+    * **Revenue** — the base-fee portion, which is what accrues to the
+      protocol rather than being competed away in priority auctions.
+
+    Caveat worth stating: this does not include Jito MEV tips, which are paid
+    out-of-protocol and are not in DeFiLlama's fee adapter. True Solana REV as
+    the term is usually used = these fees + MEV tips, so treat this as the
+    in-protocol floor rather than the whole number.
+    """
+    fees_data = _get_json("https://api.llama.fi/summary/fees/solana") or {}
+    rev_data = _get_json("https://api.llama.fi/summary/fees/solana?dataType=dailyRevenue") or {}
+
+    def pick(source: dict[str, Any], key: str) -> Any:
+        value = source.get(key)
+        return round(value, 2) if isinstance(value, (int, float)) else None
+
+    fee_24h = pick(fees_data, "total24h")
+    prev_24h = pick(fees_data, "total48hto24h")
+    change = None
+    if isinstance(fee_24h, (int, float)) and isinstance(prev_24h, (int, float)) and prev_24h:
+        change = round(100.0 * (fee_24h - prev_24h) / prev_24h, 2)
+
+    return {
+        "fees_24h_usd": fee_24h,
+        "fees_7d_usd": pick(fees_data, "total7d"),
+        "fees_30d_usd": pick(fees_data, "total30d"),
+        "fees_change_24h_pct": change,
+        "revenue_24h_usd": pick(rev_data, "total24h"),
+        "revenue_7d_usd": pick(rev_data, "total7d"),
+        "note": "In-protocol fees only; excludes out-of-protocol MEV tips.",
+    }
+
+
 def roadmap() -> list[dict[str, Any]]:
     """Upcoming protocol upgrades.
 

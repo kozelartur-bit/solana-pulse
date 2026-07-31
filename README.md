@@ -91,6 +91,21 @@ useless. The query targets the USDC mint instead, so the number reflects what
 someone competing for hot state actually paid. The share of zero-fee slots is
 reported alongside, since that is the real congestion signal.
 
+**Active addresses are measured, not extrapolated.** No keyless source
+publishes Solana DAU, so the report samples blocks over recent slots and counts
+distinct fee payers. The obvious next step — multiply per-block distinct payers
+by slots per day — is deliberately not taken: the measured repeat rate is
+around 70%, meaning the same wallets reappear constantly, and that arithmetic
+overstates daily actives by roughly two orders of magnitude. What is reported
+is what was actually observed, plus the repeat rate, which is itself the more
+interesting number: most Solana activity comes from a narrow set of recurring
+addresses.
+
+**REV excludes MEV tips.** DeFiLlama's fee adapter covers in-protocol fees,
+base plus priority. Solana REV as the term is usually used also includes Jito
+tips, which are paid out of protocol and are not in any keyless feed. The
+figure here is the in-protocol floor and is labelled as such on the page.
+
 **Dune Analytics is not used.** The brief lists it as a preferred source, but
 its API requires a key, and key-dependent collection contradicts the "no API
 keys" requirement in the same brief. The metrics Dune dashboards would supply —

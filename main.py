@@ -43,6 +43,8 @@ def build_report(verbose: bool = True) -> dict[str, Any]:  # type: ignore[name-d
         ("validators", lambda: rpc.validator_status(client)),
         ("supply", lambda: rpc.supply(client)),
         ("fees", lambda: ecosystem.fees(client)),
+        ("activity", lambda: rpc.active_addresses(client)),
+        ("revenue", ecosystem.revenue),
         ("price", offchain.coingecko_sol),
         ("price_history", offchain.coingecko_sol_sparkline),
         ("tvl", offchain.defillama_tvl),
